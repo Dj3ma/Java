@@ -9,6 +9,6 @@ public class Main {
 	    Scanner scan = new Scanner(System.in);
 	    String name = scan.next();
         System.out.println(hello + " " + name);
-	/*comment*/
+	/*comment all*/
     }
 }
