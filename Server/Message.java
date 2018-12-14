@@ -43,5 +43,9 @@ public class Message implements Serializable {
     public Map getKeys(){
         return this.keys;
     }
+
+    public static int getNumber(){
+        return number;
+    }
 }
 

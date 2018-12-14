@@ -3,15 +3,12 @@ package ru.smirnov;
 import java.io.*;
 
 public class ReaderTemplates {
-    private Template templates[] = new Template[5];
+    private static Template templates[] = new Template[5];
 
-    public ReaderTemplates(){
+    public static void readerTemplates(File file){
         for(int i = 0; i<templates.length; i++){
             templates[i] = new Template();
         }
-    }
-
-    public void readerTemplates(File file){
         int index_template = -1;
         try {
             FileInputStream fis = new FileInputStream(file);
@@ -51,9 +48,9 @@ public class ReaderTemplates {
         }
     }
 
-    public Template getTemplate(int index){
+    public static Template getTemplate(int index){
         if(index!=-1) {
-            return this.templates[index];
+            return templates[index];
         }
         else{
             return new Template();

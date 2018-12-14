@@ -104,7 +104,7 @@ public class Server {
         File fileHistory = new File(dir, "history.txt");
         File fileFinal = new File(dir, "final.txt");
         getServer().run();
-        Message message = null;
+        ArrayList<Message> messages = null;
         ObjectInputStream deserializer = null;
         try {
             deserializer = new ObjectInputStream(getServer().client.getInputStream());
@@ -113,26 +113,31 @@ public class Server {
         }
         while(!getServer().client.isClosed()) {
             try {
-                message = (Message) deserializer.readObject();
+                messages = (ArrayList<Message>) deserializer.readObject();
+                System.out.println("Получен пакет из " + messages.size() + " сообщений");
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            if(message.getId()==0){
-                try {
-                    getServer().client.close();
-                    System.out.println("Server is closed");
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
+
+            for(Message mes : messages) {
+                if (mes.getId() == 0) {
+                    try {
+                        getServer().client.close();
+                        System.out.println("Server is closed");
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                    }
+                } else {
+                    getServer().history.add(mes);
+                    getServer().final_set.put(mes.getId(), mes);
                 }
             }
-            else {
-                getServer().history.add(message);
-                getServer().final_set.put(message.getId(), message);
-            }
         }
-        /*getServer().saveHistory(fileHistory);*/
+        getServer().saveHistory(fileHistory);
+        System.out.println("История сохранена");
         getServer().saveFinalSet(fileFinal);
+        System.out.println("Финальный сет сохранен");
     }
 }
